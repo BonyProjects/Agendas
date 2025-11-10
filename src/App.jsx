@@ -200,230 +200,270 @@ function App() {
   const hasAgenda = agenda.length > 0;
 
   return (
-    <main>
-      <section>
-        <h1>Agenda para Videollamadas</h1>
-        <p style={{ color: "var(--muted)", margin: 0 }}>
-          Define objetivos, arma tu agenda y gestiona el tiempo en vivo.
+    <div className="page">
+      <header className="hero">
+        <div className="hero__eyebrow">Agenda inteligente</div>
+        <h1 className="hero__title">Diseña reuniones memorables</h1>
+        <p className="hero__subtitle">
+          Orquesta cada minuto con precisión, comparte objetivos claros y dirige
+          la conversación con un control que se siente invisible.
         </p>
-        <form style={{ display: "grid", gap: "16px" }}>
-          <label>
-            Título de la reunión
-            <input
-              value={meetingTitle}
-              onChange={(event) => setMeetingTitle(event.target.value)}
-              placeholder="Revisión semanal de producto"
-              required
-            />
-          </label>
-          <label>
-            Objetivo principal
-            <textarea
-              value={meetingGoal}
-              onChange={(event) => setMeetingGoal(event.target.value)}
-              rows={3}
-              placeholder="Alinear roadmap y priorizar tareas críticas"
-            />
-          </label>
-        </form>
+        <div className="hero__meta">
+          <div>
+            <strong>{agenda.length}</strong>
+            <span>Bloques activos</span>
+          </div>
+          <div>
+            <strong>{formatMinutesLabel(totalMinutes)}</strong>
+            <span>Duración total</span>
+          </div>
+        </div>
+      </header>
 
-        <form
-          onSubmit={handleAddBlock}
-          style={{ display: "grid", gap: "12px" }}
-        >
-          <h2 style={{ fontSize: "18px" }}>Agregar bloque de agenda</h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-              gap: "12px",
-            }}
-          >
-            <label>
-              Tema
+      <main className="layout">
+        <section className="panel panel--form">
+          <div className="panel__header">
+            <h2 className="panel__title">Configura tu sesión</h2>
+            <p className="panel__subtitle">
+              Define la esencia y estructura antes de que comience la llamada.
+            </p>
+          </div>
+
+          <form className="form-stack">
+            <label className="field">
+              <span className="field__label">Título de la reunión</span>
               <input
-                value={newBlock.topic}
-                onChange={(event) =>
-                  setNewBlock((prev) => ({
-                    ...prev,
-                    topic: event.target.value,
-                  }))
-                }
-                placeholder="Progreso del sprint"
+                value={meetingTitle}
+                onChange={(event) => setMeetingTitle(event.target.value)}
+                placeholder="Revisión semanal de producto"
                 required
               />
             </label>
-            <label>
-              Responsable
-              <input
-                value={newBlock.owner}
-                onChange={(event) =>
-                  setNewBlock((prev) => ({
-                    ...prev,
-                    owner: event.target.value,
-                  }))
-                }
-                placeholder="Ana Martínez"
-                required
+            <label className="field">
+              <span className="field__label">Objetivo principal</span>
+              <textarea
+                value={meetingGoal}
+                onChange={(event) => setMeetingGoal(event.target.value)}
+                rows={3}
+                placeholder="Alinear roadmap y priorizar tareas críticas"
               />
             </label>
-            <label>
-              Duración (min)
-              <input
-                type="number"
-                min="1"
-                max="180"
-                value={newBlock.duration}
-                onChange={(event) =>
-                  setNewBlock((prev) => ({
-                    ...prev,
-                    duration: event.target.value,
-                  }))
-                }
-                required
-              />
-            </label>
-          </div>
-          <button type="submit" className="primary">
-            Añadir bloque
-          </button>
-        </form>
-      </section>
+          </form>
 
-      <section>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <h2 style={{ fontSize: "20px" }}>Agenda</h2>
-          <span className="pill">{formatMinutesLabel(totalMinutes)} totales</span>
-        </div>
-        {agenda.length === 0 ? (
-          <div className="empty">Añade tus primeros temas para generar la agenda.</div>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Tema</th>
-                <th>Responsable</th>
-                <th>Duración</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {agenda.map((item, idx) => (
-                <tr key={idx}>
-                  <td>{idx + 1}</td>
-                  <td>{item.topic}</td>
-                  <td>{item.owner}</td>
-                  <td>{formatMinutesLabel(item.duration)}</td>
-                  <td className="agenda-actions">
-                    <button
-                      type="button"
-                      className="neutral"
-                      onClick={() => handleRemoveBlock(idx)}
-                    >
-                      Quitar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </section>
+          <form className="panel__divider" onSubmit={handleAddBlock}>
+            <div className="panel__header panel__header--compact">
+              <h3 className="panel__title">Agregar bloque</h3>
+              <p className="panel__subtitle">
+                Diseña cada tema con un responsable y tiempo preciso.
+              </p>
+            </div>
+            <div className="form-grid">
+              <label className="field">
+                <span className="field__label">Tema</span>
+                <input
+                  value={newBlock.topic}
+                  onChange={(event) =>
+                    setNewBlock((prev) => ({
+                      ...prev,
+                      topic: event.target.value,
+                    }))
+                  }
+                  placeholder="Progreso del sprint"
+                  required
+                />
+              </label>
+              <label className="field">
+                <span className="field__label">Responsable</span>
+                <input
+                  value={newBlock.owner}
+                  onChange={(event) =>
+                    setNewBlock((prev) => ({
+                      ...prev,
+                      owner: event.target.value,
+                    }))
+                  }
+                  placeholder="Ana Martínez"
+                  required
+                />
+              </label>
+              <label className="field">
+                <span className="field__label">Duración (min)</span>
+                <input
+                  type="number"
+                  min="1"
+                  max="180"
+                  value={newBlock.duration}
+                  onChange={(event) =>
+                    setNewBlock((prev) => ({
+                      ...prev,
+                      duration: event.target.value,
+                    }))
+                  }
+                  required
+                />
+              </label>
+            </div>
+            <div className="panel__actions">
+              <button type="submit" className="btn btn--primary">
+                Añadir bloque
+              </button>
+            </div>
+          </form>
+        </section>
 
-      <section>
-        <h2 style={{ fontSize: "20px" }}>Modo reunión</h2>
-        <div className="summary">
-          <div>
-            <strong>Reunión:</strong> {meetingTitle || "—"}
+        <section className="panel">
+          <div className="panel__header">
+            <h2 className="panel__title">Agenda</h2>
+            <div className="panel__meta">
+              <span className="pill pill--muted">
+                {formatMinutesLabel(totalMinutes)} totales
+              </span>
+            </div>
           </div>
-          <div>
-            <strong>Objetivo:</strong> {meetingGoal || "—"}
-          </div>
-          <div>
-            <strong>Bloques:</strong> {agenda.length}
-          </div>
-        </div>
 
-        <div className="timer-display">
-          <div className="timer-face">{formatTime(displayedSeconds)}</div>
-          <div className="current-topic">
-            <span className="pill">Bloque actual</span>
-            <strong>
-              {isFinished
-                ? "Agenda completada"
-                : currentBlock
-                ? currentBlock.topic
-                : "—"}
-            </strong>
-            <span style={{ color: "var(--muted)" }}>
-              {isFinished
-                ? "¡Buen trabajo!"
-                : currentBlock
-                ? `Responsable: ${currentBlock.owner}`
-                : "—"}
-            </span>
-          </div>
-        </div>
+          {agenda.length === 0 ? (
+            <div className="empty">
+              <h3>Tu lienzo está listo</h3>
+              <p>
+                Añade tus primeros temas para generar una agenda impecable y
+                mantener el ritmo durante la llamada.
+              </p>
+            </div>
+          ) : (
+            <div className="agenda-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Tema</th>
+                    <th>Responsable</th>
+                    <th>Duración</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {agenda.map((item, idx) => (
+                    <tr key={idx}>
+                      <td>{idx + 1}</td>
+                      <td>{item.topic}</td>
+                      <td>{item.owner}</td>
+                      <td>{formatMinutesLabel(item.duration)}</td>
+                      <td className="agenda-actions">
+                        <button
+                          type="button"
+                          className="btn btn--ghost"
+                          onClick={() => handleRemoveBlock(idx)}
+                        >
+                          Quitar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
 
-        <div className="toolbar">
-          <button
-            type="button"
-            className="primary"
-            onClick={startMeeting}
-            disabled={!hasAgenda || isRunning}
-          >
-            Iniciar reunión
-          </button>
-          <button
-            type="button"
-            className="secondary"
-            onClick={pauseMeeting}
-            disabled={!isRunning}
-          >
-            Pausar
-          </button>
-          <button
-            type="button"
-            className="secondary"
-            onClick={resumeMeeting}
-            disabled={!isPaused}
-          >
-            Reanudar
-          </button>
-          <button
-            type="button"
-            className="neutral"
-            onClick={nextBlock}
-            disabled={!hasAgenda || timer.index + 1 >= agenda.length}
-          >
-            Siguiente
-          </button>
-          <button
-            type="button"
-            className="neutral"
-            onClick={prevBlock}
-            disabled={!hasAgenda || timer.index <= 0}
-          >
-            Anterior
-          </button>
-          <button
-            type="button"
-            className="neutral"
-            onClick={resetMeeting}
-            disabled={!hasAgenda && timer.status === "idle"}
-          >
-            Reiniciar
-          </button>
-        </div>
-      </section>
-    </main>
+        <section className="panel panel--focus">
+          <div className="panel__header">
+            <h2 className="panel__title">Modo reunión</h2>
+            <p className="panel__subtitle">
+              Visualiza el flujo en vivo y mantén a todos sincronizados.
+            </p>
+          </div>
+
+          <div className="summary">
+            <div>
+              <span className="summary__label">Reunión</span>
+              <strong className="summary__value">{meetingTitle || "—"}</strong>
+            </div>
+            <div>
+              <span className="summary__label">Objetivo</span>
+              <strong className="summary__value">{meetingGoal || "—"}</strong>
+            </div>
+            <div>
+              <span className="summary__label">Bloques</span>
+              <strong className="summary__value">{agenda.length}</strong>
+            </div>
+          </div>
+
+          <div className="timer-display">
+            <div className="timer-face">
+              <span>{formatTime(displayedSeconds)}</span>
+            </div>
+            <div className="current-topic">
+              <span className="pill">Bloque actual</span>
+              <strong>
+                {isFinished
+                  ? "Agenda completada"
+                  : currentBlock
+                  ? currentBlock.topic
+                  : "—"}
+              </strong>
+              <span className="current-topic__owner">
+                {isFinished
+                  ? "¡Buen trabajo!"
+                  : currentBlock
+                  ? `Responsable: ${currentBlock.owner}`
+                  : "—"}
+              </span>
+            </div>
+          </div>
+
+          <div className="toolbar">
+            <button
+              type="button"
+              className="btn btn--primary"
+              onClick={startMeeting}
+              disabled={!hasAgenda || isRunning}
+            >
+              Iniciar reunión
+            </button>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={pauseMeeting}
+              disabled={!isRunning}
+            >
+              Pausar
+            </button>
+            <button
+              type="button"
+              className="btn btn--secondary"
+              onClick={resumeMeeting}
+              disabled={!isPaused}
+            >
+              Reanudar
+            </button>
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={nextBlock}
+              disabled={!hasAgenda || timer.index + 1 >= agenda.length}
+            >
+              Siguiente
+            </button>
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={prevBlock}
+              disabled={!hasAgenda || timer.index <= 0}
+            >
+              Anterior
+            </button>
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={resetMeeting}
+              disabled={!hasAgenda && timer.status === "idle"}
+            >
+              Reiniciar
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
 
